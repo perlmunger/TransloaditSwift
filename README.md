@@ -1,4 +1,4 @@
-# Transloadit Swift
+# TransloaditSwift
 
 The official [Transloadit iOS-SDK library](https://github.com/transloadit/ios-sdk) provides an Objective-C implementation that will probably suffice for many users attempting to use their service, however, it leaves a few things to be desired:
 
@@ -23,7 +23,9 @@ Right. Yeah. No.
 
 ### Copy the Swift File To Your Project and Add a Brigding header
 
-Yep. That's it. You will need to add a bridging header because the class uses the common crypto classes. You can take a look at the bridging header in the Xcode project to see how it's done. You're just going to import the Common Crypto library by adding this line to your bridging header:
+Yep. That's it. Copy the file names `TransloaditTask.swift` from the included project into your own project. Done! 
+
+You will, of course, need to add a bridging header because the class uses the common crypto standard library. You can take a look at the bridging header in the sample Xcode project to see how it's done. You're just going to import the Common Crypto library by adding this line to your bridging header:
 
 ```objective-c
 #import <CommonCrypto/CommonCrypto.h>
@@ -121,7 +123,7 @@ This will upload the file to Transloadit which will make a thumbnail with the si
 
 The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the UIImageView and uploads it to Transloadit using an Assembly I created in my account (see previous code block for assembly syntax)
 
-You will need to change these properties to use your own Transloadit credentials and assembly identifier in the ViewController.swift class:
+You will need to change these properties to use your own Transloadit credentials and assembly identifier in the `ViewController.swift` class:
 
 ```Swift
 let transloaditAPIKey    = "TRANSLOADIT_API_KEY"
