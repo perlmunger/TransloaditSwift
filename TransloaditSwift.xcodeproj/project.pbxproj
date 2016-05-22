@@ -13,7 +13,6 @@
 		B3A1E9EF1CF0D99C00969A56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9EE1CF0D99C00969A56 /* Assets.xcassets */; };
 		B3A1E9F21CF0D99C00969A56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9F01CF0D99C00969A56 /* LaunchScreen.storyboard */; };
 		B3A1E9FA1CF0DAE300969A56 /* TransloaditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A1E9F91CF0DAE300969A56 /* TransloaditTask.swift */; };
-		B3A1E9FD1CF0EFF400969A56 /* Assembly.json in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9FC1CF0EFF400969A56 /* Assembly.json */; };
 		B3A1E9FF1CF136FE00969A56 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B3A1E9FE1CF136FE00969A56 /* README.md */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +26,7 @@
 		B3A1E9F31CF0D99C00969A56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B3A1E9F91CF0DAE300969A56 /* TransloaditTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransloaditTask.swift; sourceTree = "<group>"; };
 		B3A1E9FB1CF0DB7300969A56 /* TransloaditSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TransloaditSwift-Bridging-Header.h"; sourceTree = "<group>"; };
-		B3A1E9FC1CF0EFF400969A56 /* Assembly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Assembly.json; sourceTree = "<group>"; };
+		B3A1E9FC1CF0EFF400969A56 /* Template.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Template.json; sourceTree = "<group>"; };
 		B3A1E9FE1CF136FE00969A56 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -70,7 +69,7 @@
 				B3A1E9F01CF0D99C00969A56 /* LaunchScreen.storyboard */,
 				B3A1E9F31CF0D99C00969A56 /* Info.plist */,
 				B3A1E9FB1CF0DB7300969A56 /* TransloaditSwift-Bridging-Header.h */,
-				B3A1E9FC1CF0EFF400969A56 /* Assembly.json */,
+				B3A1E9FC1CF0EFF400969A56 /* Template.json */,
 			);
 			path = TransloaditSwift;
 			sourceTree = "<group>";
@@ -134,7 +133,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3A1E9F21CF0D99C00969A56 /* LaunchScreen.storyboard in Resources */,
-				B3A1E9FD1CF0EFF400969A56 /* Assembly.json in Resources */,
 				B3A1E9EF1CF0D99C00969A56 /* Assets.xcassets in Resources */,
 				B3A1E9ED1CF0D99C00969A56 /* Main.storyboard in Resources */,
 			);

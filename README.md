@@ -13,7 +13,7 @@ While none of these are complete show stoppers, they make using the library a li
 - Write the class in Swift using a closure API that makes it simple to be called back after processing
 - Add a few convenience functions and extensions to help interrogate the data structure that comes back from Transloadit on a successful upload
 - Only allows a single file to be uploaded at a time
-- You cannot specify your steps on the app side. They have to be created on the Transloadit website and used directly with an assembly identifier.
+- You cannot specify your steps on the app side. They have to be created on the Transloadit website and used directly with an template identifier.
 
 ## Installation
 
@@ -50,8 +50,8 @@ if let image = self.imageView.image {
     // Create a TransloaditTask object passing it a NSURSession that it will use as well as your API key and secret key
     let task = TransloaditTask(session: NSURLSession.sharedSession(), apiKey: transloaditAPIKey, secretKey: transloaditSecretKey)
     
-    // These are fields that my assembly uses. Yours are going to be different if you use them at all.
-    // See the "Assembly.json" file in the Xcode project to see how these fields are used on the
+    // These are fields that my template uses. Yours are going to be different if you use them at all.
+    // See the "Template.json" file in the Xcode project to see how these fields are used on the
     // server side.
     let fields = ["corp_id" : "AABBCCDDEEFF", "major" : "123456", "minor": "1234567", "device_id" : UIDevice.currentDevice().identifierForVendor!.UUIDString]
     
@@ -84,8 +84,9 @@ if let image = self.imageView.image {
     }
 }
 ```
-This will upload the file to Transloadit which will make a thumbnail with the size `320x198` and then push both original file and generated thumbnail to a directory I specify using the `fields` dictionary (see above code) in a bucket in S3. Here is what the assembly looks like (the key and secret key fields have been obscured. You will need to enter your own to see this work):
+This will upload the file to Transloadit which will make a thumbnail with the size `320x198` and then push both original file and generated thumbnail to a directory I specify using the `fields` dictionary (see above code) in a bucket in S3. Here is what the template looks like (the key and secret key fields have been obscured. You will need to enter your own to see this work):
 
+*Asembly.json* 
 ```json
 {
     "steps": {
@@ -121,9 +122,9 @@ This will upload the file to Transloadit which will make a thumbnail with the si
 
 ## The Sample Xcode Project
 
-The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the `UIImageView` and uploads it to Transloadit using an Assembly I created in my account (see previous code block for assembly syntax)
+The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the `UIImageView` and uploads it to Transloadit using a Template I created in my account (see previous code block for template syntax)
 
-You will need to change these properties to use your own Transloadit credentials and assembly identifier in the `ViewController.swift` class:
+You will need to change these properties to use your own Transloadit credentials and template identifier in the `ViewController.swift` class:
 
 ```Swift
 let transloaditAPIKey    = "TRANSLOADIT_API_KEY"
