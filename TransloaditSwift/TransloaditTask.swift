@@ -1,9 +1,7 @@
 //
 //  TransloaditTask.swift
-//  SaveDate
 //
 //  Created by Matt Long on 5/19/16.
-//  Copyright © 2016 SkyeMark, LLC. All rights reserved.
 //
 
 import UIKit

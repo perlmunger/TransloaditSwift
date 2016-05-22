@@ -23,7 +23,7 @@ Right. Yeah. No.
 
 ### Copy the Swift File To Your Project and Add a Brigding header
 
-Yep. That's it. Copy the file names `TransloaditTask.swift` from the included project into your own project. Done! 
+Yep. That's it. Copy the file named `TransloaditTask.swift` from the included project into your own project. Done! 
 
 You will, of course, need to add a bridging header because the class uses the common crypto standard library. You can take a look at the bridging header in the sample Xcode project to see how it's done. You're just going to import the Common Crypto library by adding this line to your bridging header:
 
@@ -31,7 +31,7 @@ You will, of course, need to add a bridging header because the class uses the co
 #import <CommonCrypto/CommonCrypto.h>
 ```
 
-If you haven't already added a bridging header to your project, you will need to select 'File New | File..." in Xcode and select a header file in the source category.
+If you haven't already added a bridging header to your project, you will need to select `'File New | File..."` in Xcode and select a header file in the source category.
 
 ![New Header File in Xcode](http://i.imgur.com/hUBSmbs.png)
 
