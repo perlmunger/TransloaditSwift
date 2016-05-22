@@ -76,9 +76,12 @@ if let image = self.imageView.image {
             // Alternatively, we can use the overloaded subscript operator on the taksk to retrieve
             // the first result from the step called ":original"
             if let step1 = task[":original"] {
-                
-                // Do something with the json result for step 1
-                print(step1)
+
+                if let sslURL = step1["ssl_url"] as? String {
+                    // Do something with the SSL URL. Result will be something like:
+                    // https://bucketname.s3.amazonaws.com/AABBCCDDEEFF/123456/1234567/E8B63C90-75C9-4DE7-A0B1-427436262999/HotAirBalloon.jpg
+                    
+                }
             }
         })
     }
