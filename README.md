@@ -35,7 +35,7 @@ If you haven't already added a bridging header to your project, you will need to
 
 ![New Header File in Xcode](http://i.imgur.com/hUBSmbs.png)
 
-Make sure you name the file [Project Name]-Bridging-Header.h where 'Project Name' is the name of the project you're adding it to. Then, in your project settings, specify the path to the bridging header in the "Swift Compler - Code Generation" section--specifically the "Objective-C Bridging Header" field:
+Make sure you name the file [Project Name]-Bridging-Header.h where '[Project Name]' is the name of the project you're adding it to. Then, in your project settings, specify the path to the bridging header in the "Swift Compler - Code Generation" section--specifically the "Objective-C Bridging Header" field:
 
 ![Project Settings](http://i.imgur.com/iGRvN0K.png)
 
