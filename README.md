@@ -15,8 +15,6 @@ While none of these are complete show stoppers, they make using the library a li
 - Only allows a single file to be uploaded at a time
 - You cannot specify your steps on the app side. They have to be created on the Transloadit website and used directly with an assembly identifier.
 
-**Take a look at the Assembly.json file that is part of the Xcode project to see how my assembly is implemented on the Transloadit site**
-
 ## Installation
 
 ### Pods
@@ -84,10 +82,44 @@ if let image = self.imageView.image {
     }
 }
 ```
+This will upload the file to Transloadit which will make a thumbnail with the size `320x198` and then push both original file and generated thumbnail to a directory I specify using the `fields` dictionary (see above code) in a bucket in S3. Here is what the assembly looks like (the key and secret key fields have been obscured. You will need to enter your own to see this work):
+
+```json
+{
+    "steps": {
+        "thumb": {
+            "use": ":original",
+            "robot": "/image/resize",
+            "result": true,
+            "width": 320,
+            "height": 198,
+            "resize_strategy": "crop"
+        },
+        "store": {
+            "use": ":original",
+            "robot": "/s3/store",
+            "acl": "public-read",
+            "key": "AWS_API_KEY",
+            "secret": "AWS_SECRET_KEY",
+            "path": "${fields.corp_id}/${fields.major}/${fields.minor}/${fields.device_id}/${file.name}",
+            "bucket": "BUCKET_NAME"
+        },
+        "store_thumb": {
+            "use": "thumb",
+            "robot": "/s3/store",
+            "acl": "public-read",
+            "key": "AWS_API_KEY",
+            "secret": "AWS_SECRET_KEY",
+            "path": "${fields.corp_id}/${fields.major}/${fields.minor}/${fields.device_id}/thumbnail_${file.name}",
+            "bucket": "BUCKET_NAME"
+        }
+    }
+}
+```
 
 ## The Sample Xcode Project
 
-The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the UIImageView and uploads it to Transloadit using an Assembly I created in my account. The example assembly file is included as part of the Xcode project and is named Assembly.json.
+The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the UIImageView and uploads it to Transloadit using an Assembly I created in my account (see previous code block for assembly syntax)
 
 You will need to change these properties to use your own Transloadit credentials and assembly identifier in the ViewController.swift class:
 
@@ -101,4 +133,6 @@ let transloaditTemplate  = "TRANSLOADIT_TEMPLATE_ID"
 
 I don't provide any. Feel free to post questions in the Github issues, but I may or may not answer them. The best/quickest way to add something or make a change is to submit a pull request. I'll take a look and see if it makes sense to merge it in.
 
+## License
 
+Do whatever you want with it. MIT, Apache, Whatever. It's all good.
