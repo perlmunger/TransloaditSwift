@@ -1,0 +1,30 @@
+{
+    "steps": {
+        "thumb": {
+            "use": ":original",
+            "robot": "/image/resize",
+            "result": true,
+            "width": 320,
+            "height": 198,
+            "resize_strategy": "crop"
+        },
+        "store": {
+            "use": ":original",
+            "robot": "/s3/store",
+            "acl": "public-read",
+            "key": "AWS_API_KEY",
+            "secret": "AWS_SECRET_KEY",
+            "path": "${fields.corp_id}/${fields.major}/${fields.minor}/${fields.device_id}/${file.name}",
+            "bucket": "BUCKET_NAME"
+        },
+        "store_thumb": {
+            "use": "thumb",
+            "robot": "/s3/store",
+            "acl": "public-read",
+            "key": "AWS_API_KEY",
+            "secret": "AWS_SECRET_KEY",
+            "path": "${fields.corp_id}/${fields.major}/${fields.minor}/${fields.device_id}/thumbnail_${file.name}",
+            "bucket": "BUCKET_NAME"
+        }
+    }
+}

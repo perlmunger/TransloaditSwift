@@ -43,5 +43,17 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>http://0.0.0.0:3000</key>
+			<string></string>
+			<key>http://192.168.0.25:3000</key>
+			<string></string>
+		</dict>
+	</dict>
 </dict>
 </plist>

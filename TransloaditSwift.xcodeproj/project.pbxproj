@@ -12,6 +12,9 @@
 		B3A1E9ED1CF0D99C00969A56 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9EB1CF0D99C00969A56 /* Main.storyboard */; };
 		B3A1E9EF1CF0D99C00969A56 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9EE1CF0D99C00969A56 /* Assets.xcassets */; };
 		B3A1E9F21CF0D99C00969A56 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9F01CF0D99C00969A56 /* LaunchScreen.storyboard */; };
+		B3A1E9FA1CF0DAE300969A56 /* TransloaditTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A1E9F91CF0DAE300969A56 /* TransloaditTask.swift */; };
+		B3A1E9FD1CF0EFF400969A56 /* Assembly.json in Resources */ = {isa = PBXBuildFile; fileRef = B3A1E9FC1CF0EFF400969A56 /* Assembly.json */; };
+		B3A1E9FF1CF136FE00969A56 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = B3A1E9FE1CF136FE00969A56 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +25,10 @@
 		B3A1E9EE1CF0D99C00969A56 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B3A1E9F11CF0D99C00969A56 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B3A1E9F31CF0D99C00969A56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3A1E9F91CF0DAE300969A56 /* TransloaditTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransloaditTask.swift; sourceTree = "<group>"; };
+		B3A1E9FB1CF0DB7300969A56 /* TransloaditSwift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TransloaditSwift-Bridging-Header.h"; sourceTree = "<group>"; };
+		B3A1E9FC1CF0EFF400969A56 /* Assembly.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Assembly.json; sourceTree = "<group>"; };
+		B3A1E9FE1CF136FE00969A56 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +45,7 @@
 		B3A1E9DB1CF0D99C00969A56 = {
 			isa = PBXGroup;
 			children = (
+				B3A1E9FE1CF136FE00969A56 /* README.md */,
 				B3A1E9E61CF0D99C00969A56 /* TransloaditSwift */,
 				B3A1E9E51CF0D99C00969A56 /* Products */,
 			);
@@ -56,10 +64,13 @@
 			children = (
 				B3A1E9E71CF0D99C00969A56 /* AppDelegate.swift */,
 				B3A1E9E91CF0D99C00969A56 /* ViewController.swift */,
+				B3A1E9F91CF0DAE300969A56 /* TransloaditTask.swift */,
 				B3A1E9EB1CF0D99C00969A56 /* Main.storyboard */,
 				B3A1E9EE1CF0D99C00969A56 /* Assets.xcassets */,
 				B3A1E9F01CF0D99C00969A56 /* LaunchScreen.storyboard */,
 				B3A1E9F31CF0D99C00969A56 /* Info.plist */,
+				B3A1E9FB1CF0DB7300969A56 /* TransloaditSwift-Bridging-Header.h */,
+				B3A1E9FC1CF0EFF400969A56 /* Assembly.json */,
 			);
 			path = TransloaditSwift;
 			sourceTree = "<group>";
@@ -123,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3A1E9F21CF0D99C00969A56 /* LaunchScreen.storyboard in Resources */,
+				B3A1E9FD1CF0EFF400969A56 /* Assembly.json in Resources */,
 				B3A1E9EF1CF0D99C00969A56 /* Assets.xcassets in Resources */,
 				B3A1E9ED1CF0D99C00969A56 /* Main.storyboard in Resources */,
 			);
@@ -135,7 +147,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3A1E9FA1CF0DAE300969A56 /* TransloaditTask.swift in Sources */,
 				B3A1E9EA1CF0D99C00969A56 /* ViewController.swift in Sources */,
+				B3A1E9FF1CF136FE00969A56 /* README.md in Sources */,
 				B3A1E9E81CF0D99C00969A56 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +269,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = info.mattlong.TransloaditSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TransloaditSwift/TransloaditSwift-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -266,6 +281,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = info.mattlong.TransloaditSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TransloaditSwift/TransloaditSwift-Bridging-Header.h";
 			};
 			name = Release;
 		};
