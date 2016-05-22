@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         // Grab the image from the image view just to demonstrate uploading a file
         if let image = self.imageView.image {
             
-            // Create a TransloaditTaks object passing it a NSURSession that it will use as well as your API key and secret key
+            // Create a TransloaditTask object passing it a NSURSession that it will use as well as your API key and secret key
             let task = TransloaditTask(session: NSURLSession.sharedSession(), apiKey: transloaditAPIKey, secretKey: transloaditSecretKey)
             
             // These are fields that my assembly uses. Yours are going to be different if you use them at all.

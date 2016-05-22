@@ -47,7 +47,7 @@ The class that I created allows you to perform an upload to Transloadit with the
 // Grab the image from the image view just to demonstrate uploading a file
 if let image = self.imageView.image {
     
-    // Create a TransloaditTaks object passing it a NSURSession that it will use as well as your API key and secret key
+    // Create a TransloaditTask object passing it a NSURSession that it will use as well as your API key and secret key
     let task = TransloaditTask(session: NSURLSession.sharedSession(), apiKey: transloaditAPIKey, secretKey: transloaditSecretKey)
     
     // These are fields that my assembly uses. Yours are going to be different if you use them at all.
@@ -89,6 +89,16 @@ if let image = self.imageView.image {
 
 The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the UIImageView and uploads it to Transloadit using an Assembly I created in my account. The example assembly file is included as part of the Xcode project and is named Assembly.json.
 
+You will need to change these properties to use your own Transloadit credentials and assembly identifier in the ViewController.swift class:
+
+```Swift
+let transloaditAPIKey    = "TRANSLOADIT_API_KEY"
+let transloaditSecretKey = "TRANSLOADIT_SECRET_KEY"
+let transloaditTemplate  = "TRANSLOADIT_TEMPLATE_ID"
+```
+
 ## Support
 
 I don't provide any. Feel free to post questions in the Github issues, but I may or may not answer them. The best/quickest way to add something or make a change is to submit a pull request. I'll take a look and see if it makes sense to merge it in.
+
+
