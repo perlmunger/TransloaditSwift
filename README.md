@@ -121,7 +121,7 @@ This will upload the file to Transloadit which will make a thumbnail with the si
 
 ## The Sample Xcode Project
 
-The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the UIImageView and uploads it to Transloadit using an Assembly I created in my account (see previous code block for assembly syntax)
+The project that I included is a universal iOS application that displays an image in an image view. When you tap an upload button, the app grabs the image in the `UIImageView` and uploads it to Transloadit using an Assembly I created in my account (see previous code block for assembly syntax)
 
 You will need to change these properties to use your own Transloadit credentials and assembly identifier in the `ViewController.swift` class:
 
