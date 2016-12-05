@@ -7,117 +7,117 @@
 import UIKit
 
 let kBoredServerURL                            = "http://api2.transloadit.com/instances/bored"
-let kDefaultExpirationInMinutes:NSTimeInterval = 120.0
+let kDefaultExpirationInMinutes:TimeInterval = 120.0
 
 class TransloaditTask {
     
     var apiKey:String
     var secretKey:String
-    var session:NSURLSession
-    var dateFormatter = NSDateFormatter()
+    var session:URLSession
+    var dateFormatter = DateFormatter()
     var result:[String:AnyObject]?
-    var defaultTimeoutValue:NSTimeInterval = 300.0
+    var defaultTimeoutValue:TimeInterval = 300.0
     
-    init(session:NSURLSession, apiKey:String, secretKey:String) {
+    init(session:URLSession, apiKey:String, secretKey:String) {
         self.session = session
         self.apiKey = apiKey
         self.secretKey = secretKey
-        self.dateFormatter.timeZone = NSTimeZone(name: "UTC")
-        self.dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        self.dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        self.dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         self.dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss+00:00"
         
     }
     
-    func postData(fileData:NSData, filename:String, fields:[String:String]?, templateIdentifier:String, completion:((json:[String:AnyObject]?, response:NSURLResponse?, error:NSError?) -> ())?) {
+    func postData(_ fileData:Data, filename:String, fields:[String:String]?, templateIdentifier:String, completion:((_ json:[String:AnyObject]?, _ response:URLResponse?, _ error:NSError?) -> ())?) {
         // Request a server instance before sending the actual file
-        let serverTask = self.session.dataTaskWithRequest(NSURLRequest(URL: NSURL(string: kBoredServerURL)!)) { (data, response, error) in
-            guard let data = data where error == nil else { return }
+        let serverTask = self.session.dataTask(with: URLRequest(url: URL(string: kBoredServerURL)!), completionHandler: { (data, response, error) in
+            guard let data = data, error == nil else { return }
             
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
-                if let serverUrlString = json?["api2_host"] as? String, serverUrl = NSURL(string: "http://" + serverUrlString + "/assemblies") {
+                let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
+                if let serverUrlString = json?["api2_host"] as? String, let serverUrl = URL(string: "http://" + serverUrlString + "/assemblies") {
                     
                     let formatString = "%@\r\nContent-Disposition: form-data; name=\"%@\"\r\n\r\n%@\r\n"
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         let body = NSMutableData()
-
+                        
                         // Create a boundary to use for the multipart form data
-                        let boundaryString = NSUUID().UUIDString
+                        let boundaryString = UUID().uuidString
                         let boundary = "--\(boundaryString)"
-
+                        
                         // Add a timeout
-                        let date = NSDate().dateByAddingTimeInterval(kDefaultExpirationInMinutes * 60)
+                        let date = Date().addingTimeInterval(kDefaultExpirationInMinutes * 60)
                         
                         // This is required by transloadit. Create a params array and then convert it to an NSData
-                        let params = ["template_id" : templateIdentifier, "auth" : ["expires" : self.dateFormatter.stringFromDate(date), "key" : self.apiKey], "blocking" : "true"]
+                        let params = ["template_id" : templateIdentifier, "auth" : ["expires" : self.dateFormatter.string(from: date), "key" : self.apiKey], "blocking" : "true"] as [String : Any]
                         
                         do {
-                            let json = try NSJSONSerialization.dataWithJSONObject(params, options: [])
+                            let json = try JSONSerialization.data(withJSONObject: params, options: [])
                             
                             var current = String(format: "%@\r\nContent-Disposition: form-data; name=\"params\"\r\n\r\n", boundary)
-                            body.appendData(current.dataUsingEncoding(NSUTF8StringEncoding)!)
+                            body.append(current.data(using: String.Encoding.utf8)!)
                             // Append the resulting data object to the body
-                            body.appendData(json)
-                            body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-
-                            // Generate the signature using the secret key and the JSON output as a string and 
+                            body.append(json)
+                            body.append("\r\n".data(using: String.Encoding.utf8)!)
+                            
+                            // Generate the signature using the secret key and the JSON output as a string and
                             // append it to the body as well
-                            current = String(format: formatString, boundary, "signature", String(data:json, encoding:NSUTF8StringEncoding)!.sha1WithKey(self.secretKey))
-                            body.appendData(current.dataUsingEncoding(NSUTF8StringEncoding)!)
+                            current = String(format: formatString, boundary, "signature", String(data:json, encoding:String.Encoding.utf8)!.sha1WithKey(self.secretKey))
+                            body.append(current.data(using: String.Encoding.utf8)!)
                         } catch {
                             
                         }
-
+                        
                         // Append all the fields to the body
                         if let fields = fields {
                             for (key, value) in fields {
                                 let current = String(format: formatString, boundary, key, value)
-                                body.appendData(current.dataUsingEncoding(NSUTF8StringEncoding)!)
+                                body.append(current.data(using: String.Encoding.utf8)!)
                             }
                         }
-
+                        
                         // We're only sending one file, so append it to the body as well
                         let current = String(format: "%@\r\nContent-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n\r\n", boundary, filename, filename)
                         
-                        body.appendData(current.dataUsingEncoding(NSUTF8StringEncoding)!)
+                        body.append(current.data(using: String.Encoding.utf8)!)
                         
                         // File contents as NSData
-                        body.appendData(fileData)
+                        body.append(fileData)
                         
                         // Close out the file section
-                        body.appendData("\r\n".dataUsingEncoding(NSUTF8StringEncoding)!)
-
+                        body.append("\r\n".data(using: String.Encoding.utf8)!)
+                        
                         // Close out the whole multipart form
-                        body.appendData(String(format: "--%@--\r\n", boundaryString).dataUsingEncoding(NSUTF8StringEncoding)!)
+                        body.append(String(format: "--%@--\r\n", boundaryString).data(using: String.Encoding.utf8)!)
                         
                         // Create the URL Request
-                        let request = NSMutableURLRequest(URL: serverUrl)
+                        let request = NSMutableURLRequest(url: serverUrl)
                         // Set the content type, method and body
                         request.setValue(String(format: "multipart/form-data; boundary=%@", boundaryString), forHTTPHeaderField: "Content-Type")
-                        request.HTTPMethod = "POST"
-                        request.HTTPBody = body
+                        request.httpMethod = "POST"
+                        request.httpBody = body as Data
                         
                         // The the content lengths and timeout interval for the request
                         request.setValue(String(format: "%lu", body.length), forHTTPHeaderField: "Content-Length")
                         request.timeoutInterval = self.defaultTimeoutValue
                         
-                        let dataTask = self.session.dataTaskWithRequest(request, completionHandler: { (responseData, uploadResponse, uploadError) in
+                        let dataTask = self.session.dataTask(with: request as URLRequest, completionHandler: { (responseData, uploadResponse, uploadError) in
                             if uploadError != nil {
-                                dispatch_async(dispatch_get_main_queue(), {
-                                    completion?(json:nil, response:uploadResponse, error:uploadError)
+                                DispatchQueue.main.async(execute: {
+                                    completion?(nil, uploadResponse, uploadError as NSError?)
                                 })
                             }
-                            guard let responseData = responseData, httpResponse = uploadResponse as? NSHTTPURLResponse else {
-                                dispatch_async(dispatch_get_main_queue(), {
-                                    completion?(json:nil, response:uploadResponse, error:uploadError)
+                            guard let responseData = responseData, let httpResponse = uploadResponse as? HTTPURLResponse else {
+                                DispatchQueue.main.async(execute: {
+                                    completion?(nil, uploadResponse, uploadError as NSError?)
                                 })
                                 return
                             }
                             
                             var json:[String:AnyObject]?
                             do {
-                                json = try NSJSONSerialization.JSONObjectWithData(responseData, options: []) as? [String:AnyObject]
+                                json = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String:AnyObject]
                             } catch {
                                 json = nil
                             }
@@ -125,10 +125,10 @@ class TransloaditTask {
                             // Set the local variable which can be access when the request finishes
                             self.result = json?["results"] as? [String:AnyObject]
                             
-                            dispatch_async(dispatch_get_main_queue(), {
-                                completion?(json:json, response:httpResponse, error:uploadError)
+                            DispatchQueue.main.async(execute: {
+                                completion?(json, httpResponse, uploadError as NSError?)
                             })
-
+                            
                         })
                         
                         dataTask.resume()
@@ -139,7 +139,7 @@ class TransloaditTask {
             } catch {
                 
             }
-        }
+        })
         
         serverTask.resume()
     }
@@ -153,7 +153,7 @@ class TransloaditTask {
     
     subscript(stepName:String) -> [String:AnyObject]? {
         get {
-            guard let result = self.result, resultObject = result[stepName] as? [[String:AnyObject]] else {
+            guard let result = self.result, let resultObject = result[stepName] as? [[String:AnyObject]] else {
                 return nil
             }
             // This implementation only uploads a single file, so there
@@ -165,21 +165,21 @@ class TransloaditTask {
 
 // Create a string extension for handling the SHA1 encryption
 extension String {
-    func sha1WithKey(secretKey:String) -> String {
-        let data = self.cStringUsingEncoding(NSASCIIStringEncoding)
-        let key = secretKey.cStringUsingEncoding(NSASCIIStringEncoding)
+    func sha1WithKey(_ secretKey:String) -> String {
+        let data = self.cString(using: String.Encoding.ascii)
+        let key = secretKey.cString(using: String.Encoding.ascii)
         
-        let dataLen = Int(self.lengthOfBytesUsingEncoding(NSASCIIStringEncoding))
-        let keyLen = Int(secretKey.lengthOfBytesUsingEncoding(NSASCIIStringEncoding))
+        let dataLen = Int(self.lengthOfBytes(using: String.Encoding.ascii))
+        let keyLen = Int(secretKey.lengthOfBytes(using: String.Encoding.ascii))
         
         let digestLen = Int(CC_SHA1_DIGEST_LENGTH)
-        let result = UnsafeMutablePointer<CUnsignedChar>.alloc(digestLen)
+        let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen)
         CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), key!, keyLen, data!, dataLen, result)
         
         return self.hexStringWithData(result, ofLength: digestLen) as String
     }
     
-    func hexStringWithData(data:UnsafeMutablePointer<CUnsignedChar>, ofLength:Int) -> NSString {
+    func hexStringWithData(_ data:UnsafeMutablePointer<CUnsignedChar>, ofLength:Int) -> NSString {
         let tmp = NSMutableString()
         for i:Int in 0..<ofLength {
             tmp.appendFormat("%02x", data[i])
