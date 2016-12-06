@@ -106,6 +106,7 @@
 				TargetAttributes = {
 					B3A1E9E31CF0D99C00969A56 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -268,6 +269,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = info.mattlong.TransloaditSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TransloaditSwift/TransloaditSwift-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -280,6 +282,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = info.mattlong.TransloaditSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TransloaditSwift/TransloaditSwift-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -302,6 +305,7 @@
 				B3A1E9F81CF0D99C00969A56 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
