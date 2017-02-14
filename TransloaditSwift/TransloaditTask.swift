@@ -7,7 +7,7 @@
 import UIKit
 
 let kBoredServerURL                            = "http://api2.transloadit.com/instances/bored"
-let kDefaultExpirationInMinutes:TimeInterval = 120.0
+let kDefaultExpirationInMinutes:TimeInterval   = 120.0
 
 class TransloaditTask {
     
@@ -19,11 +19,11 @@ class TransloaditTask {
     var defaultTimeoutValue:TimeInterval = 300.0
     
     init(session:URLSession, apiKey:String, secretKey:String) {
-        self.session = session
-        self.apiKey = apiKey
-        self.secretKey = secretKey
-        self.dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        self.dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        self.session                  = session
+        self.apiKey                   = apiKey
+        self.secretKey                = secretKey
+        self.dateFormatter.timeZone   = TimeZone(identifier: "UTC")
+        self.dateFormatter.locale     = Locale(identifier: "en_US_POSIX")
         self.dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss+00:00"
         
     }
@@ -49,7 +49,7 @@ class TransloaditTask {
                         // Add a timeout
                         let date = Date().addingTimeInterval(kDefaultExpirationInMinutes * 60)
                         
-                        // This is required by transloadit. Create a params array and then convert it to an NSData
+                        // This is required by transloadit. Create a params array and then convert it to a Data object
                         let params = ["template_id" : templateIdentifier, "auth" : ["expires" : self.dateFormatter.string(from: date), "key" : self.apiKey], "blocking" : "true"] as [String : Any]
                         
                         do {
@@ -63,7 +63,7 @@ class TransloaditTask {
                             
                             // Generate the signature using the secret key and the JSON output as a string and
                             // append it to the body as well
-                            current = String(format: formatString, boundary, "signature", String(data:json, encoding:String.Encoding.utf8)!.sha1WithKey(self.secretKey))
+                            current = String(format: formatString, boundary, "signature", String(data:json, encoding:String.Encoding.utf8)!.sha1(with: self.secretKey))
                             body.append(current.data(using: String.Encoding.utf8)!)
                         } catch {
                             
@@ -82,7 +82,7 @@ class TransloaditTask {
                         
                         body.append(current.data(using: String.Encoding.utf8)!)
                         
-                        // File contents as NSData
+                        // File contents as Data
                         body.append(fileData)
                         
                         // Close out the file section
@@ -92,16 +92,18 @@ class TransloaditTask {
                         body.append(String(format: "--%@--\r\n", boundaryString).data(using: String.Encoding.utf8)!)
                         
                         // Create the URL Request
-                        let request = NSMutableURLRequest(url: serverUrl)
+                        var request = URLRequest(url: serverUrl)
+                        
                         // Set the content type, method and body
                         request.setValue(String(format: "multipart/form-data; boundary=%@", boundaryString), forHTTPHeaderField: "Content-Type")
                         request.httpMethod = "POST"
                         request.httpBody = body as Data
                         
-                        // The the content lengths and timeout interval for the request
+                        // Set the content length and timeout interval for the request
                         request.setValue(String(format: "%lu", body.count), forHTTPHeaderField: "Content-Length")
                         request.timeoutInterval = self.defaultTimeoutValue
                         
+                        // Create the data task
                         let dataTask = self.session.dataTask(with: request as URLRequest, completionHandler: { (responseData, uploadResponse, uploadError) in
                             if uploadError != nil {
                                 DispatchQueue.main.async(execute: {
@@ -122,7 +124,7 @@ class TransloaditTask {
                                 json = nil
                             }
                             
-                            // Set the local variable which can be access when the request finishes
+                            // Set the local variable which can be accessed when the request finishes
                             self.result = json?["results"] as? [String:AnyObject]
                             
                             DispatchQueue.main.async(execute: {
@@ -131,6 +133,7 @@ class TransloaditTask {
                             
                         })
                         
+                        // Start the data task
                         dataTask.resume()
                     })
                     
@@ -144,6 +147,7 @@ class TransloaditTask {
         serverTask.resume()
     }
     
+    // List of the names of all of the steps that were performed Transloadit side
     var resultSteps : [String]? {
         guard let result = self.result else {
             return nil
@@ -151,6 +155,7 @@ class TransloaditTask {
         return Array(result.keys)
     }
     
+    // Provide a way to access the result object by name using a subscript
     subscript(stepName:String) -> [String:AnyObject]? {
         get {
             guard let result = self.result, let resultObject = result[stepName] as? [[String:AnyObject]] else {
@@ -165,7 +170,7 @@ class TransloaditTask {
 
 // Create a string extension for handling the SHA1 encryption
 extension String {
-    func sha1WithKey(_ secretKey:String) -> String {
+    func sha1(with secretKey:String) -> String {
         let data = self.cString(using: String.Encoding.ascii)
         let key = secretKey.cString(using: String.Encoding.ascii)
         
@@ -176,14 +181,14 @@ extension String {
         let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen)
         CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), key!, keyLen, data!, dataLen, result)
         
-        return self.hexStringWithData(result, ofLength: digestLen) as String
+        return self.hexString(with: result, ofLength: digestLen)
     }
     
-    func hexStringWithData(_ data:UnsafeMutablePointer<CUnsignedChar>, ofLength:Int) -> NSString {
+    func hexString(with data:UnsafeMutablePointer<CUnsignedChar>, ofLength:Int) -> String {
         var tmp = String()
         for i:Int in 0..<ofLength {
             tmp = tmp.appendingFormat("%02x", data[i])
         }
-        return NSString(string: tmp)
+        return tmp
     }
 }

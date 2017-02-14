@@ -48,7 +48,7 @@ The class that I created allows you to perform an upload to Transloadit with the
 if let image = self.imageView.image {
     
     // Create a TransloaditTask object passing it a NSURSession that it will use as well as your API key and secret key
-    let task = TransloaditTask(session: NSURLSession.shared, apiKey: transloaditAPIKey, secretKey: transloaditSecretKey)
+    let task = TransloaditTask(session: URLSession.shared, apiKey: transloaditAPIKey, secretKey: transloaditSecretKey)
     
     // These are fields that my template uses. Yours are going to be different if you use them at all.
     // See the "Template.json" file in the Xcode project to see how these fields are used on the
@@ -68,25 +68,29 @@ if let image = self.imageView.image {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             
             // Print out the full JSON to the console to see what we got
-            print(json)
+            debugPrint(json as Any)
             
             // Print a list of the steps found in the result JSON
-            print(task.resultSteps)
+            debugPrint(task.resultSteps as Any)
             
             // Alternatively, we can use the overloaded subscript operator on the taksk to retrieve
             // the first result from the step called ":original"
             if let step1 = task[":original"] {
-
+                
                 if let sslURL = step1["ssl_url"] as? String {
                     // Do something with the SSL URL. Result will be something like:
                     // https://bucketname.s3.amazonaws.com/AABBCCDDEEFF/123456/1234567/E8B63C90-75C9-4DE7-A0B1-427436262999/HotAirBalloon.jpg
-                    
+                    debugPrint(sslURL)
                 }
             }
+            
+            
+
         })
     }
 }
 ```
+
 This will upload the file to Transloadit which will make a thumbnail with the size `320x198` and then push both original file and generated thumbnail to a directory I specify using the `fields` dictionary (see above code) in a bucket in S3. Here is what the template looks like (the key and secret key fields have been obscured. You will need to enter your own to see this work):
 
 *Asembly.json* 

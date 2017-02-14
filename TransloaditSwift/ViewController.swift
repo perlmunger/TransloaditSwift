@@ -47,10 +47,10 @@ class ViewController: UIViewController {
                     UIApplication.shared.isNetworkActivityIndicatorVisible = false
                     
                     // Print out the full JSON to the console to see what we got
-                    print(json)
+                    debugPrint(json as Any)
                     
                     // Print a list of the steps found in the result JSON
-                    print(task.resultSteps)
+                    debugPrint(task.resultSteps as Any)
                     
                     // Alternatively, we can use the overloaded subscript operator on the taksk to retrieve
                     // the first result from the step called ":original"
@@ -59,7 +59,7 @@ class ViewController: UIViewController {
                         if let sslURL = step1["ssl_url"] as? String {
                             // Do something with the SSL URL. Result will be something like:
                             // https://bucketname.s3.amazonaws.com/AABBCCDDEEFF/123456/1234567/E8B63C90-75C9-4DE7-A0B1-427436262999/HotAirBalloon.jpg
-                            
+                            debugPrint(sslURL)
                         }
                     }
                     
