@@ -40,7 +40,7 @@ class TransloaditTask {
                     let formatString = "%@\r\nContent-Disposition: form-data; name=\"%@\"\r\n\r\n%@\r\n"
                     
                     DispatchQueue.main.async(execute: {
-                        let body = NSMutableData()
+                        var body = Data()
                         
                         // Create a boundary to use for the multipart form data
                         let boundaryString = UUID().uuidString
@@ -99,7 +99,7 @@ class TransloaditTask {
                         request.httpBody = body as Data
                         
                         // The the content lengths and timeout interval for the request
-                        request.setValue(String(format: "%lu", body.length), forHTTPHeaderField: "Content-Length")
+                        request.setValue(String(format: "%lu", body.count), forHTTPHeaderField: "Content-Length")
                         request.timeoutInterval = self.defaultTimeoutValue
                         
                         let dataTask = self.session.dataTask(with: request as URLRequest, completionHandler: { (responseData, uploadResponse, uploadError) in
@@ -180,9 +180,9 @@ extension String {
     }
     
     func hexStringWithData(_ data:UnsafeMutablePointer<CUnsignedChar>, ofLength:Int) -> NSString {
-        let tmp = NSMutableString()
+        var tmp = String()
         for i:Int in 0..<ofLength {
-            tmp.appendFormat("%02x", data[i])
+            tmp = tmp.appendingFormat("%02x", data[i])
         }
         return NSString(string: tmp)
     }
